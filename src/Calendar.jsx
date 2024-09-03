@@ -1,13 +1,15 @@
 // Calendar.js
-import React from "react";
 import Month from "./Month";
+import Navigator from "./Navigator";
 import { months } from "./data";
 
 const Calendar = () => {
   return (
-    <div className="w-[1056px] h-[816px] ">
+    <div className="w-full h-full">
+      {/* Üstte Navigator Bileşeni   <Navigator />*/}
+
       {/* Her ay için Month bileşeni */}
-      <div>
+      <div className="z-50 w-full h-full">
         {months.map((month, index) => (
           <Month
             key={index}

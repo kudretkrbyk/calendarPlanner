@@ -1,13 +1,13 @@
-import React from "react";
-
 const Day = ({ day, month }) => {
   return (
-    <a
-      href={`#${month}-${day}`}
-      className="p-10 border border-black bg-gray-200 text-center rounded-lg hover:bg-gray-300 transition"
-    >
-      {day}
-    </a>
+    <td className="relative p-2 border border-black">
+      <a
+        href={`#${month}-${day}`}
+        className="absolute top-0 left-0 p-1 text-sm"
+      >
+        {day}
+      </a>
+    </td>
   );
 };
 

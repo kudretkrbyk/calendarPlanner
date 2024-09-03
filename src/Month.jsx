@@ -1,54 +1,68 @@
-import React from "react";
 import Day from "./Day";
+import Navigator from "./Navigator";
 import DayPage from "./DayPage";
-import { months } from "./data";
 
-const daysOfWeek = [
-  "Pazartesi",
-  "Salı",
-  "Çarşamba",
-  "Perşembe",
-  "Cuma",
-  "Cumartesi",
-  "Pazar",
-];
-const month = ["JAN", "FEB", "MAR", "APR"];
+const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
 const Month = ({ name, days, startDay }) => {
   const blanks = [...Array(startDay - 1)].map((_, i) => (
-    <div key={`blank-${name}-${i}`} className="p-2"></div>
+    <td key={i} className="p-2 border border-black"></td>
   ));
+
   const daysInMonth = [...Array(days)].map((_, i) => (
     <Day key={i} day={i + 1} month={name} />
   ));
+
+  const totalSlots = [...blanks, ...daysInMonth];
+  let rows = [];
+  let cells = [];
+
+  totalSlots.forEach((row, i) => {
+    if (i % 7 !== 0) {
+      cells.push(row);
+    } else {
+      rows.push(cells);
+      cells = [];
+      cells.push(row);
+    }
+    if (i === totalSlots.length - 1) {
+      rows.push(cells);
+    }
+  });
+
   const dayPages = [...Array(days)].map((_, i) => (
     <DayPage key={i} day={i + 1} month={name} />
   ));
 
   return (
-    <div className="mb-12 ">
-      {/* Ayların yan yana dizilmesi için flex kullanılıyor */}
-      <div className="flex justify-around mb-4">
-        {months.map((month, index) => (
-          <a
-            key={index}
-            href={`#${month.name}`}
-            className="p-2 text-xl font-semibold hover:underline"
-          >
-            {month.name}
-          </a>
-        ))}
+    <div id={name} className="relative z-50 p-2 w-full h-full ">
+      <div className="AY-GORUNUMU p-2  w-[1025px] h-[1357px] border border-blue-500 overflow-hidden">
+        <Navigator />
+        <h2 className="text-2xl font-bold   text-left z-50">{name}</h2>
+
+        <div className="z-50 w-full h-full bg-white ">
+          <table className="table-fixed w-full h-full text-center  border border-black">
+            <thead>
+              <tr>
+                {daysOfWeek.map((day, index) => (
+                  <th key={index} className="border border-black p-2">
+                    {day}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((d, i) => (
+                <tr key={i}>{d}</tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <h2 className="text-2xl font-bold mb-4 text-center">{name} </h2>
-      <div className="grid grid-cols-7 gap-2 text-center">
-        {daysOfWeek.map((day, index) => (
-          <div key={index + day} className="font-bold">
-            {day}
-          </div>
-        ))}
-      </div>
-      <div className="grid grid-cols-7 gap-2">{blanks.concat(daysInMonth)}</div>
-      <div className="mt-8">{dayPages}</div>
+      {/* Gün Sayfaları */}
+      <div className="page-break break-before-all"></div>{" "}
+      {/* Ay ve gün sayfalarını ayırır */}
+      <div className="flex flex-col z-50 ">{dayPages}</div>
     </div>
   );
 };
